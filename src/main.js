@@ -8,7 +8,7 @@ var myStaff = ['ue5060e54a4ed380dcafd0a2213592ad0'];
 const myAdmin = ['ufdb348d53532a57228f045ecfaa00f8d','ue5060e54a4ed380dcafd0a2213592ad0','ua044c625da53442ff1040e30bfb1ee28','u93c7c5d46bc99b92c09faede05b7e8b6','u6660a5ab23e58650e107243d706ae727','ua7ab78360d15bb06bd61f4311ffc078d','u0db0acb862af364edda273a975ee589b','u0d3300929098eab5efb923ac32f8f7e3','u3c239a612e44e23e5ba887045dbbaa60','ubbc139cd574b65ec09610bf0f7cedfb1','u3e7a636610c82444e42a77384887441a','uf53069091adb4bad3b31bc516daa1086'];
 
 const myBot = ['ue5060e54a4ed380dcafd0a2213592ad0','ua044c625da53442ff1040e30bfb1ee28','u93c7c5d46bc99b92c09faede05b7e8b6','u6660a5ab23e58650e107243d706ae727','ua7ab78360d15bb06bd61f4311ffc078d','u0db0acb862af364edda273a975ee589b','u0d3300929098eab5efb923ac32f8f7e3','u3c239a612e44e23e5ba887045dbbaa60','ubbc139cd574b65ec09610bf0f7cedfb1'];
-const banList = [];//Banned list
+var banList = [];//Banned list
 var vx = {};var midnornama,pesane,kickhim;var waitMsg = "no";//DO NOT CHANGE THIS
 var komenTL = "AutoLike by Rakha\nline://ti/p/~khalik02"; //Comment for timeline
 var bcText = "Masukan teks untuk broadcast";
@@ -44,6 +44,7 @@ class LINE extends LineAPI {
         super();
         this.receiverID = '';
         this.checkReader = [];
+	this.sendBlacklist = 0;
         this.sendStaff = 0;
         this.stateStatus = {
             mute: 0,
@@ -98,6 +99,16 @@ class LINE extends LineAPI {
             this.cancelAll(operation.param1);
             }
         }
+	    
+        if(operation.type == 13 && this.stateStatus.cancel == 0) {
+             if(isBanned(operation.param3)) {
+             let ban = new Message();
+             ban.to = operation.param1;
+             this._client.sendMessage(0, ban);
+             this._cancel(operation.param1,[operation.param3]);
+              }
+
+	}
 
         if(operation.type == 13 && this.stateStatus.lockinvite == 1) {
             if(isAdmin(operation.param2))
@@ -115,6 +126,27 @@ class LINE extends LineAPI {
              }
 
            }
+	    
+	    
+        if(operation.type == 13 && this.stateStatus.lockinvite == 1) {
+            if(isAdmin(operation.param2))
+            {
+            }
+            else if(isBot(operation.param2))
+            {
+            }
+            else if(isStaff(operation.param2))
+            {
+            }
+            else if(isBanned(operation.param2))
+            {
+            }
+          else
+            {
+               banList.push(operation.param2);
+            }
+
+	}
 
 		if(operation.type == 11 && this.stateStatus.lockupdategroup == 1){//update group (open qr)
 		    let seq = new Message();
@@ -191,6 +223,26 @@ class LINE extends LineAPI {
              }
 
            }
+	    
+        if(operation.type == 11 && this.stateStatus.lockupdategroup == 1) {
+            if(isAdmin(operation.param2))
+            {
+            }
+            else if(isBot(operation.param2))
+            {
+            }
+            else if(isStaff(operation.param2))
+            {
+            }
+            else if(isBanned(operation.param2))
+            {
+            }
+          else
+            {
+               banList.push(operation.param2);
+            }
+
+	}
 
 
           if(operation.type == 15 && this.stateStatus.bmsg == 1) {
@@ -252,6 +304,12 @@ class LINE extends LineAPI {
              }
 
            }
+	    
+           if(operation.type == 17 && this.stateStatus.lockjoin == 0) {
+              if(isBanned(operation.param2)) {
+                 this._kickMember(operation.param1,[operation.param2]);
+              }
+	   }
 
            if(operation.type == 19 && this.stateStatus.bankaimode == 1) { //ada kick
             // op1 = group nya
@@ -289,6 +347,27 @@ class LINE extends LineAPI {
             } 
 
         }
+	    
+        if(operation.type == 19 && this.stateStatus.bankaimode == 1) {
+            if(isAdmin(operation.param2))
+            {
+            }
+            else if(isBot(operation.param2))
+            {
+            }
+            else if(isStaff(operation.param2))
+            {
+            }
+            else if(isBanned(operation.param2))
+            {
+            }
+          else
+            {
+               banList.push(operation.param2);
+            }
+
+        }
+
 
         if(operation.type == 32 && this.stateStatus.lockcancel == 1) { //ada cancel
           // op1 = group nya
@@ -325,6 +404,28 @@ class LINE extends LineAPI {
             } 
 
         }
+	    
+
+        if(operation.type == 32 && this.stateStatus.lockcancel == 1) {
+            if(isAdmin(operation.param2))
+            {
+            }
+            else if(isBot(operation.param2))
+            {
+            }
+            else if(isStaff(operation.param2))
+            {
+            }
+            else if(isBanned(operation.param2))
+            {
+            }
+          else
+            {
+               banList.push(operation.param2);
+            }
+
+        }
+
 
         if(operation.type == 55){ //ada reader
 
@@ -384,7 +485,7 @@ class LINE extends LineAPI {
 
     setState(seq,param) {
 		if(param == 1){
-			let isinya = "Status bot\n";
+			let isinya = "〆Status bot〆\n";
 			for (var k in this.stateStatus){
                 if (typeof this.stateStatus[k] !== 'function') {
 					if(this.stateStatus[k]==1){
@@ -400,13 +501,13 @@ class LINE extends LineAPI {
             const action = actions.toLowerCase();
             const state = status.toLowerCase() == 'on' ? 1 : 0;
             this.stateStatus[action] = state;
-			let isinya = "Setting\n";
+			let isinya = "●▬▬▬▬〆Info Setting〆\▬▬▬▬●n";
 			for (var k in this.stateStatus){
                 if (typeof this.stateStatus[k] !== 'function') {
 					if(this.stateStatus[k]==1){
-						isinya += " "+firstToUpperCase(k)+" => on\n";
+						isinya += "√ "+firstToUpperCase(k)+" → on\n";
 					}else{
-						isinya += " "+firstToUpperCase(k)+" => off\n";
+						isinya += "メ"+firstToUpperCase(k)+" → off\n";
 					}
                 }
             }
@@ -775,6 +876,88 @@ this._sendMessage(seq,"Kamu bukan admin");
              }
 
       }
+	    
+      if(txt == 'ban' && this.sendBlacklist == 0 && isAdmin(seq.from)){
+         this.sendBlacklist = 1;
+         this._sendMessage(seq,'Send contact untuk dibanned')
+       }
+
+       if(seq.contentType == 13 && this.sendBlacklist == 1 && isAdmin(seq.from)) {
+          seq.contentType = 0;
+          this.sendBlacklist = 0;
+          banList.push(seq.contentMetadata.mid);
+          this._sendMessage(seq,'Berhasil ditambahkan ke banlist');
+        }
+
+       if(txt == "ban"){
+            if(isAdmin(seq.from))
+            {
+            }
+            else if(isBot(seq.from))
+            {
+            }
+            else if(isStaff(seq.from))
+            {
+            }
+          else
+            {
+            this._sendMessage(seq,"Kamu bukan admin");
+             }
+
+      }
+
+        if(txt == 'unban' && this.sendBlacklist == 0 && isAdmin(seq.from))
+{
+           this.sendBlacklist = 2;
+           this._sendMessage(seq,'Kirim kontak untuk di unban')
+           }
+
+           if(seq.contentType == 13 && this.sendBlacklist == 2 && isAdmin(seq.from))
+{
+              if(!isBanned(seq.contentMetadata.mid)) {
+                 seq.contentType = 0;
+                 this.sendBlacklist = 0;
+                 await this._sendMessage(seq,'Target belum masuk di banlist');
+       }
+     else
+       {
+            seq.contentType = 0;
+            while (banList[banList.indexOf(seq.contentMetadata.mid)])
+        {
+            delete banList[banList.indexOf(seq.contentMetadata.mid)];
+        }
+    this.sendBlacklist = 0;
+    await this._sendMessage(seq,'Berhasil dihapus dari banlist');
+    }
+}
+
+       if(txt == "unban"){
+            if(isAdmin(seq.from))
+            {
+            }
+            else if(isBot(seq.from))
+            {
+            }
+            else if(isStaff(seq.from))
+            {
+            }
+          else
+            {
+            this._sendMessage(seq,"Kamu bukan admin");
+             }
+
+      }
+
+
+		if(txt == "banlist"){
+			seq.text = "●▬▬▬▬ Daftar Banned ▬▬▬▬●\n";
+			for(var i = 0; i < banList.length; i++){
+			    let orangnya = await this._getContacts([banList[i]]);
+            seq.text += "\n☞ "+orangnya[0].displayName+"";
+			}
+			this._sendMessage(seq,seq.text);
+		}
+
 
 		if(cox[0] == "BcGroup" && isAdmin(seq.from) && cox[1]){
             let listMID = [];
@@ -914,7 +1097,7 @@ this._sendMessage(seq,"Kamu bukan admin");
 
         if(txt == 'help1') {
 	   if(isAdmin(seq.from) || isStaff(seq.from)) {
-              this._sendMessage(seq, '==============================\n♞♞♞ɆsᵽȺđȺ ŦɇȺm♞♞♞\n==============================\n♞ Myid\n♞ Gift1\n♞ Halo\n♞ Help1\n♞ CreatorBot\n♞ Bc [Jumlah] /[Text] (Jika Bc On)\n♞ InfoGroup\n♞ GroupCreator\n♞ Tag1\n♞ Speed\n♞ setpoint1\n♞ check1\n♞ Status/Setting\n♞  reset read\n  Authority Admin Dan Staff\n\n==============================\n Staff Command\n==============================\n♞ Berkumpul\n♞ Opengarganta[Membuka gerbang dimensi\n♞ Closegarganta[Menutup gerbang dimensi\n♞ hueco mundo[Kembali ke Markas]\n♞ spam\n♞ Kick On/Off\n♞ Cancel On/Off\n♞ LockInvite On/Off\n♞ LockUpdateGroup On/Off\n♞ LockJoin On/Off\n♞ LockCancel On/Off\n♞ Cero「@」[menghancurkan target dengan cero]\n♞ Kickall (Kick On Terlebih Dahulu)\n♞ Msg1\n♞ Bc On/Off\n♞ Bmsg On/Off\n\n==============================\nAdmin command\n==============================\n♞ Mute\n♞ Unmute\n♞ add:staff\n♞ del:staff\n♞ BcGroup [Text]\n♞ AddContact\n♞ CreateGroup [Jumlah]-[Nama]/[Mid]\n\n==============================\n♞♞♞ɆsᵽȺđȺ ŦɇȺm Ƀøŧ ♞♞♞\n==============================');
+              this._sendMessage(seq, '●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞♞♞ɆsᵽȺđȺ ŦɇȺm♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Myid\n♞ Gift1\n♞ Halo\n♞ Help1\n♞ CreatorBot\n♞ Say [Jumlah] /[Text]\n♞ InfoGroup\n♞ GroupCreator\n♞ Tag1\n♞ Speed\n♞ setpoint1\n♞ check1\n♞ Status/Setting\n♞  reset read\n\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n Staff Command\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Berkumpul\n♞ Opengarganta[Membuka gerbang dimensi\n♞ Closegarganta[Menutup gerbang dimensi]\n♞ hueco mundo[Kembali ke Markas]\n♞ spam\n♞ Bankaimode On/Off\n♞ Cancel On/Off\n♞ LockInvite On/Off\n♞ LockUpdateGroup On/Off\n♞ LockJoin On/Off\n♞ LockCancel On/Off\n♞ Cero「@」[menghancurkan target dengan cero]\n♞ Kickall (bankaimode On Terlebih Dahulu)\n♞ Msg1\n♞ Bc On/Off\n♞ Bmsg On/Off\n\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\nAdmin command\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Mute\n♞ Unmute\n♞ add:staff\n♞ del:staff\n♞ BcGroup [Text]\n♞ AddContact\n♞ CreateGroup [Jumlah]-[Nama]/[Mid]\n\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞♞♞ɆsᵽȺđȺ ŦɇȺm Ƀøŧ ♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●');
 	   }
 	}
 
@@ -951,10 +1134,10 @@ this._sendMessage(seq,"Kamu bukan admin");
           if(isAdmin(seq.from) || isStaff(seq.from)) {
         	this._sendMessage(seq, 'Hai juga');
 	  }
-      	else
-        {
+      	  else
+	  {
          	this._sendMessage(seq, 'ga ah lu bau, TQ!');
-	}
+	  }
 	}
 
 
@@ -1107,7 +1290,7 @@ let { listMember } = await this.searchGroup(seq.to);
         if(action.includes(txt)) {
             this.setState(seq)
         }
-	if(txt == 'Bankai' && this.stateStatus.bankaimode == 1) {
+	if(txt == 'Bankai') {
 		if(isAdmin(seq.from) || isStaff(seq.from)) {
 			this.sendMessage(seq,"Bankai mode sudah aktif");
 		}
@@ -1184,10 +1367,10 @@ let { listMember } = await this.searchGroup(seq.to);
 	   }
 	}
 
-        //if(cmd == 'lirik') {
-            //let lyrics = await this._searchLyrics(payload);
-            //this._sendMessage(seq,lyrics);
-        //}
+        if(cmd == 'lirik') {
+            let lyrics = await this._searchLyrics(payload);
+            this._sendMessage(seq,lyrics);
+        }
 
         //if(cmd === 'ip') {
             //exec(`curl ipinfo.io/${payload}`,(err, res) => {
