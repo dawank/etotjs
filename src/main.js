@@ -485,13 +485,13 @@ class LINE extends LineAPI {
 
     setState(seq,param) {
 		if(param == 1){
-			let isinya = "〆Status bot〆\n";
+			let isinya = "●▬▬▬〆Status bot〆▬▬▬●\n";
 			for (var k in this.stateStatus){
                 if (typeof this.stateStatus[k] !== 'function') {
 					if(this.stateStatus[k]==1){
-						isinya += " "+firstToUpperCase(k)+" => on\n";
+						isinya += "√ "+firstToUpperCase(k)+" → on\n";
 					}else{
-						isinya += " "+firstToUpperCase(k)+" => off\n";
+						isinya += "メ "+firstToUpperCase(k)+" → off\n";
 					}
                 }
             }this._sendMessage(seq,isinya);
@@ -501,7 +501,7 @@ class LINE extends LineAPI {
             const action = actions.toLowerCase();
             const state = status.toLowerCase() == 'on' ? 1 : 0;
             this.stateStatus[action] = state;
-			let isinya = "●▬▬▬▬〆Info Setting〆\▬▬▬▬●n";
+			let isinya = "●▬▬▬〆Info Setting〆▬▬▬●\n";
 			for (var k in this.stateStatus){
                 if (typeof this.stateStatus[k] !== 'function') {
 					if(this.stateStatus[k]==1){
