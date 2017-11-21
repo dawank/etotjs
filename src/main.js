@@ -910,26 +910,26 @@ this._sendMessage(seq,"Kamu bukan admin");
 {
            this.sendBlacklist = 2;
            this._sendMessage(seq,'Kirim kontak untuk di unban')
-           }
+}
 
            if(seq.contentType == 13 && this.sendBlacklist == 2 && isAdmin(seq.from))
-{
+	   {
               if(!isBanned(seq.contentMetadata.mid)) {
                  seq.contentType = 0;
                  this.sendBlacklist = 0;
                  await this._sendMessage(seq,'Target belum masuk di banlist');
-       }
-     else
-       {
+	      }
+     	else
+	{
             seq.contentType = 0;
             while (banList[banList.indexOf(seq.contentMetadata.mid)])
-        {
-            delete (banList[banList.indexOf(seq.contentMetadata.mid)]);
-        }
-    this.sendBlacklist = 0;
-    await this._sendMessage(seq,'Berhasil dihapus dari banlist');
-    }
-}
+	    {
+            delete banList[banList.indexOf(seq.contentMetadata.mid)];
+	    }
+    	this.sendBlacklist = 0;
+        await this._sendMessage(seq,'Berhasil dihapus dari banlist');
+	}
+	   }
 
        if(txt == "unban"){
             if(isAdmin(seq.from))
