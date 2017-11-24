@@ -910,26 +910,26 @@ this._sendMessage(seq,"Kamu bukan admin");
 {
            this.sendBlacklist = 2;
            this._sendMessage(seq,'Kirim kontak untuk di unban')
-}
+           }
 
            if(seq.contentType == 13 && this.sendBlacklist == 2 && isAdmin(seq.from))
-	   {
+{
               if(!isBanned(seq.contentMetadata.mid)) {
                  seq.contentType = 0;
                  this.sendBlacklist = 0;
                  await this._sendMessage(seq,'Target belum masuk di banlist');
-	      }
-     	else
-	{
+       }
+     else
+       {
             seq.contentType = 0;
             while (banList[banList.indexOf(seq.contentMetadata.mid)])
-	    {
+        {
             delete banList[banList.indexOf(seq.contentMetadata.mid)];
-	    }
-    	this.sendBlacklist = 0;
-        await this._sendMessage(seq,'Berhasil dihapus dari banlist');
-	}
-	   }
+        }
+    this.sendBlacklist = 0;
+    await this._sendMessage(seq,'Berhasil dihapus dari banlist');
+    }
+}
 
        if(txt == "unban"){
             if(isAdmin(seq.from))
@@ -947,6 +947,7 @@ this._sendMessage(seq,"Kamu bukan admin");
              }
 
       }
+
 
 
 		if(txt == "banlist"){
@@ -1067,6 +1068,15 @@ this._sendMessage(seq,"Kamu bukan admin");
              }
 
       }
+	    
+		if(txt == "stafflist"){
+			seq.text = "●▬▬▬ Daftar staff ▬▬▬●\n";
+			for(var i = 0; i < myStaff.length; i++){
+			    let staff = await this._getContacts([myStaff[i]]);
+            seq.text += "\n☞ "+staff[0].displayName+"";
+			}
+			this._sendMessage(seq,seq.text);
+		}
 
         if(txt == 'infogroup') {
            this._sendMessage(seq, 'Nama Group :\n'+ginfo.name+'\n\nGroup ID :\n'+ginfo.id+'\n\nPembuat Group :\n'+ginfo.creator.displayName);
@@ -1097,7 +1107,7 @@ this._sendMessage(seq,"Kamu bukan admin");
 
         if(txt == 'help1') {
 	   if(isAdmin(seq.from) || isStaff(seq.from)) {
-              this._sendMessage(seq, '●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞♞♞ɆsᵽȺđȺ ŦɇȺm♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Myid\n♞ Gift1\n♞ Halo\n♞ Help1\n♞ CreatorBot\n♞ Say [Jumlah] /[Text]\n♞ InfoGroup\n♞ GroupCreator\n♞ Tag1\n♞ Speed\n♞ setpoint1\n♞ check1\n♞ Status/Setting\n♞  reset read\n\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n Staff Command\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Berkumpul\n♞ Opengarganta[Membuka gerbang dimensi\n♞ Closegarganta[Menutup gerbang dimensi]\n♞ hueco mundo[Kembali ke Markas]\n♞ spam\n♞ Bankaimode On/Off\n♞ Cancel On/Off\n♞ LockInvite On/Off\n♞ LockUpdateGroup On/Off\n♞ LockJoin On/Off\n♞ LockCancel On/Off\n♞ Cero「@」[menghancurkan target dengan cero]\n♞ Kickall (bankaimode On Terlebih Dahulu)\n♞ Msg1\n♞ Bc On/Off\n♞ Bmsg On/Off\n\●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\nAdmin command\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Ban\n♞ Unban\n♞ Mute\n♞ Unmute\n♞ add:staff\n♞ del:staff\n♞ BcGroup [Text]\n♞ AddContact\n♞ CreateGroup [Jumlah]-[Nama]/[Mid]\n\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞♞♞ɆsᵽȺđȺ ŦɇȺm Ƀøŧ ♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●');
+              this._sendMessage(seq, '●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n ♞♞♞ɆsᵽȺđȺ ŦɇȺm♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Myid\n♞ Gift1\n♞ Halo\n♞ Help1\n♞ CreatorBot\n♞ Say [Jumlah] /[Text]\n♞ InfoGroup\n♞ GroupCreator\n♞ Tag1\n♞ Speed\n♞ setpoint1\n♞ check1\n♞ Status/Setting\n♞  reset read\n♞ Berkumpul\n♞ Opengarganta[Membuka gerbang dimensi\n♞ Closegarganta[Menutup gerbang dimensi]\n♞ hueco mundo[Kembali ke Markas]\n♞ spam\n♞ Bankaimode On/Off\n♞ Cancel On/Off\n♞ LockInvite On/Off\n♞ LockUpdateGroup On/Off\n♞ LockJoin On/Off\n♞ LockCancel On/Off\n♞ Cero「@」[menghancurkan target dengan cero]\n♞ Kickall (bankaimode On Terlebih Dahulu)\n♞ Msg1\n♞ Bc On/Off\n♞ Bmsg On/Off\n\●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\nAdmin command\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Ban\n♞ Unban\n♞ Mute\n♞ Unmute\n♞ add:staff\n♞ del:staff\n♞ BcGroup [Text]\n♞ AddContact\n♞ CreateGroup [Jumlah]-[Nama]/[Mid]\n\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞♞♞ɆsᵽȺđȺ ŦɇȺm Ƀøŧ ♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●');
 	   }
 	}
 
