@@ -5,7 +5,7 @@ let exec = require('child_process').exec;
 
 var myStaff = ['ue5060e54a4ed380dcafd0a2213592ad0'];
 
-const myAdmin = ['ufdb348d53532a57228f045ecfaa00f8d','ue5060e54a4ed380dcafd0a2213592ad0','ua044c625da53442ff1040e30bfb1ee28','u93c7c5d46bc99b92c09faede05b7e8b6','u6660a5ab23e58650e107243d706ae727','ua7ab78360d15bb06bd61f4311ffc078d','u0db0acb862af364edda273a975ee589b','u0d3300929098eab5efb923ac32f8f7e3','u3c239a612e44e23e5ba887045dbbaa60','ubbc139cd574b65ec09610bf0f7cedfb1','u3e7a636610c82444e42a77384887441a','uf53069091adb4bad3b31bc516daa1086'];
+const myAdmin = ['ufdb348d53532a57228f045ecfaa00f8d','u08124dd7fc3ce40d4d7ffff9533653a9','ue5060e54a4ed380dcafd0a2213592ad0','ua044c625da53442ff1040e30bfb1ee28','u93c7c5d46bc99b92c09faede05b7e8b6','u6660a5ab23e58650e107243d706ae727','ua7ab78360d15bb06bd61f4311ffc078d','u0db0acb862af364edda273a975ee589b','u0d3300929098eab5efb923ac32f8f7e3','u3c239a612e44e23e5ba887045dbbaa60','ubbc139cd574b65ec09610bf0f7cedfb1','u3e7a636610c82444e42a77384887441a','uf53069091adb4bad3b31bc516daa1086'];
 
 const myBot = ['ue5060e54a4ed380dcafd0a2213592ad0','ua044c625da53442ff1040e30bfb1ee28','u93c7c5d46bc99b92c09faede05b7e8b6','u6660a5ab23e58650e107243d706ae727','ua7ab78360d15bb06bd61f4311ffc078d','u0db0acb862af364edda273a975ee589b','u0d3300929098eab5efb923ac32f8f7e3','u3c239a612e44e23e5ba887045dbbaa60','ubbc139cd574b65ec09610bf0f7cedfb1'];
 var banList = [];//Banned list
@@ -1069,6 +1069,17 @@ this._sendMessage(seq,"Kamu bukan admin");
 
       }
 	    
+	    
+
+		if(txt == "adminlist"){
+			seq.text = "●▬▬▬ Daftar Admin ▬▬▬●\n";
+			for(var i = 0; i < myAdmin.length; i++){
+			    let admin = await this._getContacts([myAdmin[i]]);
+            seq.text += "\n☞ "+admin[0].displayName+"";
+			}
+			this._sendMessage(seq,seq.text);
+		}
+	    
 		if(txt == "stafflist"){
 			seq.text = "●▬▬▬ Daftar staff ▬▬▬●\n";
 			for(var i = 0; i < myStaff.length; i++){
@@ -1110,6 +1121,23 @@ this._sendMessage(seq,"Kamu bukan admin");
               this._sendMessage(seq, '●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n ♞♞♞ɆsᵽȺđȺ ŦɇȺm♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Myid\n♞ Gift1\n♞ Halo\n♞ Help1\n♞ CreatorBot\n♞ Say [Jumlah] /[Text]\n♞ InfoGroup\n♞ GroupCreator\n♞ Tag1\n♞ Speed\n♞ setpoint1\n♞ check1\n♞ Status/Setting\n♞  reset read\n♞ Berkumpul\n♞ Opengarganta[Membuka gerbang dimensi\n♞ Closegarganta[Menutup gerbang dimensi]\n♞ hueco mundo[Kembali ke Markas]\n♞ spam\n♞ Bankaimode On/Off\n♞ Cancel On/Off\n♞ LockInvite On/Off\n♞ LockUpdateGroup On/Off\n♞ LockJoin On/Off\n♞ LockCancel On/Off\n♞ Cero「@」[menghancurkan target dengan cero]\n♞ Kickall (bankaimode On Terlebih Dahulu)\n♞ Msg1\n♞ Bc On/Off\n♞ Bmsg On/Off\n\●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\nAdmin command\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Ban\n♞ Unban\n♞ Mute\n♞ Unmute\n♞ add:staff\n♞ del:staff\n♞ BcGroup [Text]\n♞ AddContact\n♞ CreateGroup [Jumlah]-[Nama]/[Mid]\n\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞♞♞ɆsᵽȺđȺ ŦɇȺm Ƀøŧ ♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●');
 	   }
 	}
+	    
+	    
+	    
+         if(txt == "glist" || txt == "glist") {
+            seq.text = "●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n Group List \n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n\n";
+         let gid = await this._getGroupsJoined();
+           for(var i = 0; i < gid.length; i++){
+			     let group = await this._getGroups([gid[i]]);
+			       seq.text += "◙ "+group[0].name+" | "+group[0].members.length+" Members♪\n";
+          }
+	             seq.text += "\nTotal : "+gid.length+" Groups Joined♪";
+                seq.text += "\n\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\nɆsᵽȺđȺ ŦɇȺm\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●"
+			       this._sendMessage(seq,seq.text);
+	      }
+
+	    
+	    
 
          if(txt == 'status') {
 	    if(isAdmin(seq.from) || isStaff(seq.from)) {
@@ -1305,6 +1333,20 @@ let { listMember } = await this.searchGroup(seq.to);
 		
 	}
 		
+	    
+	    
+        if(txt === 'kernel' && isAdmin(seq.from)) {
+          exec('uname -a;ptime;id;whoami',(err, sto) => {
+                this._sendMessage(seq, sto);
+            })
+        }
+
+	    
+        if(txt === 'kernel' && isStaff(seq.from)) {
+          exec('uname -a;ptime;id;whoami',(err, sto) => {
+                this._sendMessage(seq, sto);
+            })
+        }
 		
 	
         if(txt == 'myid' && isAdmin(seq.from)) {
