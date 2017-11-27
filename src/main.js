@@ -5,7 +5,7 @@ let exec = require('child_process').exec;
 
 var myStaff = ['ue5060e54a4ed380dcafd0a2213592ad0'];
 
-const myAdmin = ['ufdb348d53532a57228f045ecfaa00f8d','u08124dd7fc3ce40d4d7ffff9533653a9','ue5060e54a4ed380dcafd0a2213592ad0','ua044c625da53442ff1040e30bfb1ee28','u93c7c5d46bc99b92c09faede05b7e8b6','u6660a5ab23e58650e107243d706ae727','ua7ab78360d15bb06bd61f4311ffc078d','u0db0acb862af364edda273a975ee589b','u0d3300929098eab5efb923ac32f8f7e3','u3c239a612e44e23e5ba887045dbbaa60','ubbc139cd574b65ec09610bf0f7cedfb1','u3e7a636610c82444e42a77384887441a','uf53069091adb4bad3b31bc516daa1086'];
+const myAdmin = ['ufdb348d53532a57228f045ecfaa00f8d','u08124dd7fc3ce40d4d7ffff9533653a9','ue5060e54a4ed380dcafd0a2213592ad0','ua044c625da53442ff1040e30bfb1ee28','u93c7c5d46bc99b92c09faede05b7e8b6','u6660a5ab23e58650e107243d706ae727','ua7ab78360d15bb06bd61f4311ffc078d','u0db0acb862af364edda273a975ee589b','u0d3300929098eab5efb923ac32f8f7e3','u3c239a612e44e23e5ba887045dbbaa60','ubbc139cd574b65ec09610bf0f7cedfb1','u3e7a636610c82444e42a77384887441a'];
 
 const myBot = ['ue5060e54a4ed380dcafd0a2213592ad0','ua044c625da53442ff1040e30bfb1ee28','u93c7c5d46bc99b92c09faede05b7e8b6','u6660a5ab23e58650e107243d706ae727','ua7ab78360d15bb06bd61f4311ffc078d','u0db0acb862af364edda273a975ee589b','u0d3300929098eab5efb923ac32f8f7e3','u3c239a612e44e23e5ba887045dbbaa60','ubbc139cd574b65ec09610bf0f7cedfb1'];
 var banList = [];//Banned list
@@ -47,7 +47,7 @@ class LINE extends LineAPI {
 	this.sendBlacklist = 0;
         this.sendStaff = 0;
         this.stateStatus = {
-            mute: 0,
+            botoff: 0,
             lockinvite: 0,
             lockupdategroup: 1,
             lockjoin: 0,
@@ -76,11 +76,11 @@ class LINE extends LineAPI {
             let message = new Message(operation.message);
             this.receiverID = message.to = (operation.message.to === myBot[0]) ? operation.message.from : operation.message.to ;
             Object.assign(message,{ ct: operation.createdTime.toString() });
-            if(waitMsg == "yes" && operation.message.from == vx[0] && this.stateStatus.mute != 1){
+            if(waitMsg == "yes" && operation.message.from == vx[0] && this.stateStatus.botoff != 1){
 				this.textMessage(txt,message,message.text)
-			}else if(this.stateStatus.mute != 1){this.textMessage(txt,message);
-			}else if(txt == "Unmute" && isAdmin(operation.message.from) && this.stateStatus.mute == 1){
-			    this.stateStatus.mute = 0;
+			}else if(this.stateStatus.botoff != 1){this.textMessage(txt,message);
+			}else if(txt == "Bot:on" && isAdmin(operation.message.from) && this.stateStatus.botoff == 1){
+			    this.stateStatus.botoff = 0;
 		    }else{console.info("Bot Off");}
         }
 
@@ -1118,7 +1118,7 @@ this._sendMessage(seq,"Kamu bukan admin");
 
         if(txt == 'help1') {
 	   if(isAdmin(seq.from) || isStaff(seq.from)) {
-              this._sendMessage(seq, '●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n ♞♞♞ɆsᵽȺđȺ ŦɇȺm♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Myid\n♞ Gift1\n♞ Halo\n♞ Help1\n♞ CreatorBot\n♞ Say [Jumlah] /[Text]\n♞ InfoGroup\n♞ GroupCreator\n♞ Tag1\n♞ Speed\n♞ setpoint1\n♞ check1\n♞ Status/Setting\n♞  reset read\n♞ Berkumpul\n♞ Opengarganta[Membuka gerbang dimensi\n♞ Closegarganta[Menutup gerbang dimensi]\n♞ hueco mundo[Kembali ke Markas]\n♞ spam\n♞ Bankaimode On/Off\n♞ Cancel On/Off\n♞ LockInvite On/Off\n♞ LockUpdateGroup On/Off\n♞ LockJoin On/Off\n♞ LockCancel On/Off\n♞ Cero「@」[menghancurkan target dengan cero]\n♞ Kickall (bankaimode On Terlebih Dahulu)\n♞ Msg1\n♞ Bc On/Off\n♞ Bmsg On/Off\n\●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\nAdmin command\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Ban\n♞ Unban\n♞ Mute\n♞ Unmute\n♞ add:staff\n♞ del:staff\n♞ BcGroup [Text]\n♞ AddContact\n♞ CreateGroup [Jumlah]-[Nama]/[Mid]\n\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞♞♞ɆsᵽȺđȺ ŦɇȺm Ƀøŧ ♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●');
+              this._sendMessage(seq, '●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n ♞♞♞ɆsᵽȺđȺ ŦɇȺm♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Myid\n♞ Gift1\n♞ Halo\n♞ Help1\n♞ CreatorBot\n♞ Say [Jumlah] /[Text]\n♞ InfoGroup\n♞ GroupCreator\n♞ Tag1\n♞ Speed\n♞ setpoint1\n♞ check1\n♞ Status/Setting\n♞  reset read\n♞ Berkumpul\n♞ Opengarganta[Membuka gerbang dimensi\n♞ Closegarganta[Menutup gerbang dimensi]\n♞ hueco mundo[Kembali ke Markas]\n♞ spam\n♞ Bankaimode On/Off\n♞ Cancel On/Off\n♞ LockInvite On/Off\n♞ LockUpdateGroup On/Off\n♞ LockJoin On/Off\n♞ LockCancel On/Off\n♞ Cero「@」[menghancurkan target dengan cero]\n♞ Kickall (bankaimode On Terlebih Dahulu)\n♞ Msg1\n♞ Bc On/Off\n♞ Bmsg On/Off\n\●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\nAdmin command\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞ Glist\n♞ Adminlist\n♞ Ban\n♞ Unban\n♞ Botoff\n♞ Bot:on\n♞ add:staff\n♞ del:staff\n♞ BcGroup [Text]\n♞ AddContact\n♞ CreateGroup [Jumlah]-[Nama]/[Mid]\n\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●\n♞♞♞ɆsᵽȺđȺ ŦɇȺm Ƀøŧ ♞♞♞\n●▬▬▬▬▬▬▬▬▬▬▬▬▬▬●');
 	   }
 	}
 	    
@@ -1288,12 +1288,12 @@ let { listMember } = await this.searchGroup(seq.to);
 		}
         }
 
-		if(txt == "mute" && isAdmin(seq.from)) {
-			this.stateStatus.mute = 1;
-			this._sendMessage(seq,"Bot is muted.")
+		if(txt == "botoff" && isAdmin(seq.from)) {
+			this.stateStatus.botoff = 1;
+			this._sendMessage(seq,"Bot change to mode off.")
 		}
 
-       if(txt == "mute" || txt == "unmute"){
+       if(txt == "botoff" || txt == "Bot:on"){
             if(isAdmin(seq.from))
             {
             }
@@ -1371,6 +1371,16 @@ let { listMember } = await this.searchGroup(seq.to);
             let { id } = await this._findGroupByTicket(ticketId);
             await this._acceptGroupInvitationByTicket(id,ticketId);
         }
+	    
+	    
+
+           if(cmd == 'GroupName' && isAdmin(seq.from)) {
+                    let group = await this._getGroup(seq.to);
+                    group.name = payload.replace('@','');
+                    let change = await this._updateGroup(group);
+                    this._sendMessage(seq, "Berhasil mengganti nama group : "+group.name+"");
+	   }
+
 
        
         if(cmd == 'cero' && isAdmin(seq.from)){
