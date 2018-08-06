@@ -3,11 +3,11 @@ const { Message, OpType, Location } = require('../curve-thrift/line_types');
 let exec = require('child_process').exec;
 
 
-var myStaff = ['ue5060e54a4ed380dcafd0a2213592ad0'];
+var myStaff = ['ua33a5b61b096902826ad88ceec5cab56'];
 
-const myAdmin = ['ufdb348d53532a57228f045ecfaa00f8d','u08124dd7fc3ce40d4d7ffff9533653a9','ue5060e54a4ed380dcafd0a2213592ad0','ua044c625da53442ff1040e30bfb1ee28','u93c7c5d46bc99b92c09faede05b7e8b6','u6660a5ab23e58650e107243d706ae727','ua7ab78360d15bb06bd61f4311ffc078d','u0db0acb862af364edda273a975ee589b','u0d3300929098eab5efb923ac32f8f7e3','u3c239a612e44e23e5ba887045dbbaa60','ubbc139cd574b65ec09610bf0f7cedfb1','u3e7a636610c82444e42a77384887441a','uf53069091adb4bad3b31bc516daa1086'];
+const myAdmin = ['ubbf5fbe22865fcd64a4c4937d5b547c6'];
 
-const myBot = ['ue5060e54a4ed380dcafd0a2213592ad0','ua044c625da53442ff1040e30bfb1ee28','u93c7c5d46bc99b92c09faede05b7e8b6','u6660a5ab23e58650e107243d706ae727','ua7ab78360d15bb06bd61f4311ffc078d','u0db0acb862af364edda273a975ee589b','u0d3300929098eab5efb923ac32f8f7e3','u3c239a612e44e23e5ba887045dbbaa60','ubbc139cd574b65ec09610bf0f7cedfb1'];
+const myBot = ['u366cb0a9ace5fa9831ce46b715146e26','u53dc7331f6d2c4601ebaf0fdd0b7796d','uaa4b06fcdf0d1e76c88306ce2fd9d19b','u001c51ca5ed2a204fbc7c08691d8b4bb','ubd071cb84f1253e0134f08f734ccbafd','ufe504f42d34856e4e2d5581b95e0ea64','u61cb9c71659ba91a37b13889a5106c84','u565ae99998a944f023d422582c3a0878','ue907987b3706b3ee2a5c79d34b5604f1','u0febc26f4d61c11b78f443b0d4e42497'];
 var banList = [];//Banned list
 var vx = {};var midnornama,pesane,kickhim;var waitMsg = "no";//DO NOT CHANGE THIS
 var komenTL = "AutoLike by Rakha\nline://ti/p/~khalik02"; //Comment for timeline
